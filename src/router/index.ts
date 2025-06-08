@@ -1,4 +1,3 @@
-// src/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router'
 import Home           from '@/views/Home.vue'
 import Students       from '@/views/Students.vue'
@@ -12,9 +11,12 @@ import CourseForm     from '@/views/CourseForm.vue'
 import AddFlow        from '@/views/AddFlow.vue'
 import FlowDetail     from '@/views/FlowDetail.vue'      
 import EditFlow       from '@/views/EditFlow.vue'       
+import Login          from '@/views/Login.vue'
 
 const routes = [
-  { path: '/',                    name: 'Home',            component: Home },
+  { path: '/', redirect: '/login' },
+
+  { path: '/home',                    name: 'Home',            component: Home },
   { path: '/students',            name: 'Students',        component: Students },
   { path: '/students/new',        name: 'NewStudent',      component: StudentForm },
   { path: '/students/:id',        name: 'EditStudent',     component: StudentForm,   props: true },
@@ -23,13 +25,14 @@ const routes = [
   { path: '/finance',             name: 'Finance',         component: Finance },
   { path: '/students/:id/detail', name: 'StudentDetail',   component: StudentDetail, props: true },
 
-  // ─── Course/Flow routes ──────────────────────────────────────────────────
   { path: '/courses/add',         name: 'AddCourse',       component: AddCourse },
   { path: '/courses/:id/edit',    name: 'EditCourse',      component: CourseForm,    props: true },
 
   { path: '/flows/add',           name: 'AddFlow',         component: AddFlow },
   { path: '/flows/:flowId',       name: 'FlowDetail',      component: FlowDetail,    props: true },
   { path: '/flows/:flowId/edit',  name: 'EditFlow',        component: EditFlow,      props: true },
+
+  { path: '/login',               name: 'Login',           component: Login },
 ]
 
 export const router = createRouter({

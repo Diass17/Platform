@@ -1,4 +1,3 @@
-<!-- src/views/AddFlow.vue -->
 <template>
   <div class="flex items-center justify-center h-full bg-gray-100 p-6">
     <el-card class="w-full max-w-xl px-6 py-8 bg-white rounded-lg shadow">
@@ -10,7 +9,7 @@
         label-width="0"
         class="space-y-6"
       >
-        <!-- 1) Название потока -->
+
         <el-input
           v-model="form.name"
           placeholder="Название потока (например, DSF-1)"
@@ -19,7 +18,7 @@
           class="w-full bg-purple-50 placeholder-purple-400 text-lg rounded-lg"
         />
 
-        <!-- 2) Ментор (текстовое поле) -->
+
         <el-input
           v-model="form.mentor"
           placeholder="Ментор"
@@ -28,7 +27,7 @@
           class="w-full bg-purple-50 placeholder-purple-400 text-lg rounded-lg"
         />
 
-        <!-- 3) Даты: начало и окончание -->
+
         <div class="grid grid-cols-2 gap-4">
           <el-date-picker
             v-model="form.startDate"
@@ -50,7 +49,7 @@
           />
         </div>
 
-        <!-- 4) Кнопка “Создать поток” -->
+
         <div class="flex justify-end mt-4">
           <el-button type="primary" size="large" @click="submitFlow">
             Создать поток
@@ -59,7 +58,7 @@
       </el-form>
     </el-card>
 
-    <!-- 5) Диалог “Поток успешно создан” -->
+
     <el-dialog
       v-model="showFlowCreated"
       width="320px"
@@ -91,32 +90,32 @@ const router    = useRouter()
 const route     = useRoute()
 const flowStore = useFlowStore()
 
-// 1) Считаем courseId из query (AddFlow.vue открывается с ?courseId=…)
+
 const courseId = ref<number | null>(null)
 onMounted(() => {
   const q = route.query.courseId
   courseId.value = q ? Number(q) : null
 })
 
-// 2) Состояние формы нового потока
+
 const formRef = ref()
 const form = ref({
   name:      '',
   mentor:    '',
-  startDate: '', // в формате YYYY-MM-DD
-  endDate:   '', // в формате YYYY-MM-DD
+  startDate: '', 
+  endDate:   '', 
 })
 
-// 3) Показать “Готово!” диалог
+
 const showFlowCreated = ref(false)
 
 async function submitFlow() {
-  // 3.1) Обязательно название и courseId
+
   if (!form.value.name.trim() || courseId.value === null) {
     return
   }
 
-  // 3.2) Подготовка нового потока
+
   const newFlow: Omit<Flow, 'id'> = {
     name:      form.value.name.trim(),
     mentor:    form.value.mentor.trim(),
@@ -125,22 +124,19 @@ async function submitFlow() {
     courseId:  courseId.value,
   }
 
-  // 3.3) Добавляем в Pinia‐store
+
   await flowStore.createFlow(newFlow)
 
-  // 3.4) Сразу же перезагружаем весь список потоков,
-  // чтобы убеждаться, что в store.list точно есть наш новый элемент.
+
   await flowStore.fetchFlows()
 
-  // 3.5) Открыть “Поток успешно создан” диалог
+
   showFlowCreated.value = true
 }
 
 function onFlowCreatedContinue() {
   showFlowCreated.value = false
 
-  // 4) После закрытия диалога сразу возвращаемся к /flows?courseId=<…>,
-  // и Flows.vue уже увидит в flowStore.list все потоки, включая свежесозданный.
   router.push({
     name: 'Flows',
     query: { courseId: String(courseId.value) },

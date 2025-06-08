@@ -91,10 +91,8 @@ const router = useRouter()
 const route  = useRoute()
 const flowStore = useFlowStore()
 
-// Из route.params получим flowId
 const flowId = Number(route.params.flowId)
 
-// Состояние формы:
 const formRef = ref()
 const form = ref<Partial<Flow>>({
   name:      '',
@@ -107,11 +105,9 @@ const form = ref<Partial<Flow>>({
 const showFlowEdited = ref(false)
 
 onMounted(async () => {
-  // Если у нас нет списка потоков, загрузим
   if (!flowStore.list.length) {
     await flowStore.fetchFlows()
   }
-  // Найдём текущий поток по ID
   const f = flowStore.list.find((x) => x.id === flowId)
   if (f) {
     form.value = {
@@ -124,7 +120,6 @@ onMounted(async () => {
   }
 })
 
-// Сохранить изменения
 async function saveFlow() {
   if (!form.value.name || !form.value.courseId) return
 
@@ -139,7 +134,6 @@ async function saveFlow() {
 
 function onEditedContinue() {
   showFlowEdited.value = false
-  // Вернуться к списку потоков для данного курса
   router.push({
     name: 'Flows',
     query: { courseId: String(form.value.courseId) },

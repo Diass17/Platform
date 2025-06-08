@@ -1,10 +1,8 @@
 <template>
   <div class="p-6 bg-gray-100 min-h-screen">
     <div class="max-w-3xl mx-auto px-4">
-      <!-- Заголовок -->
       <h2 class="text-3xl font-semibold mb-6">Добавить курс</h2>
 
-      <!-- Форма -->
       <el-form ref="formRef" label-width="0" class="space-y-6">
         <el-input
           v-model="courseName"
@@ -21,7 +19,7 @@
       </el-form>
     </div>
 
-    <!-- УСПЕШНО -->
+
     <el-dialog
       v-model="showSuccess"
       width="320px"
@@ -56,7 +54,7 @@ const formRef    = ref()
 async function submitCourse() {
   const trimmed = courseName.value.trim()
   if (!trimmed) return
-  console.log('Создать курс:', trimmed)        // <— click feedback
+  console.log('Создать курс:', trimmed)       
   await store.createCourse({ name: trimmed })
   showSuccess.value = true
 }

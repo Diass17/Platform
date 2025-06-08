@@ -156,46 +156,44 @@ import { ArrowRight, Delete } from '@element-plus/icons-vue'
 const route  = useRoute()
 const router = useRouter()
 
-// ID курса (из параметра URL)
+
 const courseId = Number(route.params.id)
 
-// Подключаем Pinia-сторы
+
 const courseStore = useCourseStore()
 const flowStore   = useFlowStore()
 
-// Загрузка данных при монтировании
+
 onMounted(async () => {
   await courseStore.fetchCourses()
   await flowStore.fetchFlows()
 })
 
-// Название курса
+
 const courseName = computed<string>(() => {
   const c = courseStore.list.find((c) => c.id === courseId)
   return c ? c.name : 'Курс не найден'
 })
 
-// Список всех потоков этого курса
+
 const flowsForCourse = computed<Flow[]>(() =>
   flowStore.list.filter((f) => f.courseId === courseId)
 )
 
-// Режим редактирования (отображает чекбоксы)
+
 const isEditing = ref(false)
 
-// Массив выбранных ID потоков (через el-checkbox)
+
 const selectedIds = ref<number[]>([])
 
-// Открыть режим редактирования
+
 function startEdit() {
   isEditing.value = true
   selectedIds.value = []
 }
 
-// Применить “Редактировать” (пока заглушка, можно доработать под логику)
+
 function onApplyEdit() {
-  // Здесь можно реализовать логику массового или одиночного редактирования
-  // Например, если выбран ровно один поток, открыть форму редактирования этого потока
   if (selectedIds.value.length === 1) {
     const flowId = selectedIds.value[0]
     router.push({
@@ -203,35 +201,34 @@ function onApplyEdit() {
       params: { courseId, flowId },
     })
   }
-  // Можно также добавить логику при 0 или >1 выбранных потоках
 }
 
-// Кнопка “Добавить поток”
+
 function onAddFlow() {
   router.push({ name: 'AddFlow', params: { courseId } })
 }
 
-// При клике на стрелочку – переход к списку студентов конкретного потока
+
 function viewStudents(flowId: number) {
   router.push({ name: 'FlowStudents', params: { flowId } })
 }
 
-// ======== ДИАЛОГ УДАЛЕНИЯ ========
+
 const showDeleteDialog = ref(false)
 
-// Открыть диалог удаления
+
 function confirmDelete() {
   if (selectedIds.value.length > 0) {
     showDeleteDialog.value = true
   }
 }
 
-// Подтверждение удаления: удаляем все выбранные ID
+
 function onDelete() {
   for (const id of selectedIds.value) {
     flowStore.removeFlow(id)
   }
-  // Закрываем диалог и выходим из режима редактирования
+
   showDeleteDialog.value = false
   isEditing.value = false
   selectedIds.value = []
@@ -239,7 +236,7 @@ function onDelete() {
 </script>
 
 <style scoped>
-/* Стилизация для диалога удаления, чтобы padding в body был ноль */
+
 .delete-dialog .el-dialog__body {
   padding: 0;
 }

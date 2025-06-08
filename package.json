@@ -11,8 +11,16 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
     "axios": "^1.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
     "element-plus": "^2.9.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "pg": "^8.16.0",
     "pinia": "^2.0.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "vue": "^3.2.0",
     "vue-router": "^4.1.0"
   },

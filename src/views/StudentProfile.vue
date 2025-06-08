@@ -12,7 +12,7 @@
       <span>{{ student?.email || '—' }}</span>
 
       <span class="font-medium">Телефон</span>
-      <span>{{ student?.phone || '—' }}</span>
+      <span>{{ student?.number || '—' }}</span>
 
       <span class="font-medium">Курс</span>
       <span>{{ student?.course || '—' }}</span>
@@ -24,10 +24,10 @@
       <span>{{ student?.status === 'active' ? 'Активный' : student?.status === 'graduated' ? 'Выпускник' : '—' }}</span>
 
       <span class="font-medium">Top Student</span>
-      <span>{{ student?.topStudent ? 'Да' : 'Нет' }}</span>
+      <span>{{ student?.top_student ? 'Да' : 'Нет' }}</span>
 
       <span class="font-medium">Финансирование</span>
-      <span>{{ student?.financing || '—' }}</span>
+      <span>{{ student?.funding_source || '—' }}</span>
 
       <span class="font-medium">Сумма оплачено</span>
       <span>{{ amountPaidFormatted }}</span>
@@ -51,21 +51,21 @@ const router = useRouter()
 const store = useStudentStore()
 const id = Number(route.params.id)
 
-// Load students if needed
+
 onMounted(() => {
   if (!store.list.length) store.fetchStudents()
 })
 
-// Find the current student
+
 const student = computed<Student | undefined>(() =>
   store.list.find((s) => s.id === id)
 )
 
-// Stubbed payment data, replace with real API later
+
 const amountPaid = computed(() => 0)
 const amountDue  = computed(() => 0)
 
-// Formatted for display
+
 const amountPaidFormatted = computed(() =>
   amountPaid.value.toLocaleString('ru-RU') || '—'
 )
@@ -75,5 +75,4 @@ const amountDueFormatted = computed(() =>
 </script>
 
 <style scoped>
-/* You can adjust spacing or colors here if needed */
 </style>

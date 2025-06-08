@@ -64,13 +64,13 @@
               </template>
             </td>
           </tr>
-          <!-- Phone -->
+          <!-- number -->
           <tr class="border-t">
             <td class="px-6 py-4">Телефон</td>
             <td class="px-6 py-4">
-              <template v-if="!isEditing">{{ student?.phone || '—' }}</template>
+              <template v-if="!isEditing">{{ student?.number || '—' }}</template>
               <template v-else>
-                <el-input v-model="form.phone" size="small" />
+                <el-input v-model="form.number" size="small" />
               </template>
             </td>
           </tr>
@@ -95,11 +95,11 @@
             <td class="px-6 py-4">
               <template v-if="!isEditing">
                 <el-icon>
-                  <component :is="student?.topStudent ? SuccessFilled : CircleCloseFilled" />
+                  <component :is="student?.top_student ? SuccessFilled : CircleCloseFilled" />
                 </el-icon>
               </template>
               <template v-else>
-                <el-checkbox v-model="form.topStudent" />
+                <el-checkbox v-model="form.top_student" />
               </template>
             </td>
           </tr>
@@ -107,9 +107,9 @@
           <tr class="border-t">
             <td class="px-6 py-4">Финансирование</td>
             <td class="px-6 py-4">
-              <template v-if="!isEditing">{{ student?.financing || '—' }}</template>
+              <template v-if="!isEditing">{{ student?.funding_source || '—' }}</template>
               <template v-else>
-                <el-select v-model="form.financing" size="small">
+                <el-select v-model="form.funding_source" size="small">
                   <el-option label="Полная оплата" value="full" />
                   <el-option label="Со скидкой 30%" value="discount" />
                   <el-option label="Грант" value="grant" />
@@ -185,29 +185,29 @@ const router = useRouter()
 const store = useStudentStore()
 const id = Number(route.params.id)
 
-// State
+
 const isEditing = ref(false)
 const showSuccess = ref(false)
 
-// Load students
+
 onMounted(() => {
   if (!store.list.length) store.fetchStudents()
 })
 
-// Current student
+
 const student = computed<Student | undefined>(() => store.list.find(s => s.id === id))
 
-// Editable form
+
 const form = ref<Partial<Student>>({})
 const formPaid = ref(0)
 
-// Finance
+
 const coursePrice = computed(() => student.value ? 150000 : 0)
 const discountPrice = computed(() => Math.round(coursePrice.value * 0.7))
 const amountPaid = computed(() => formPaid.value)
 const amountDue = computed(() => discountPrice.value - amountPaid.value)
 
-// Helpers
+
 function formatTenge(val: number) {
   return val.toLocaleString('ru-RU') + ' тг'
 }
@@ -217,7 +217,7 @@ function statusLabel(val?: string) {
   return '—'
 }
 
-// Actions
+
 function startEdit() {
   if (student.value) {
     form.value = { ...student.value }

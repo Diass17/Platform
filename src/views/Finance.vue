@@ -8,9 +8,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-// TODO: import и подключить store для финансов, fetchFinanceData() и т.д.
 onMounted(() => {
-  // placeholder
 })
 </script>
 

@@ -302,35 +302,30 @@ import { ArrowRight, Delete, SuccessFilled } from '@element-plus/icons-vue';
 import { useCourseStore, Course } from '@/store/courseStore';
 import { useFlowStore, Flow } from '@/store/flowStore';
 
-// ─── a) Router & Query ───────────────────────────────────────────────────
 const router = useRouter();
 const route = useRoute();
 
-// Текущий courseId из query, например /flows?courseId=5
 const currentCourseId = computed<number | null>(() => {
   const q = route.query.courseId;
   return q ? Number(q) : null;
 });
 
-// ─── b) Stores ─────────────────────────────────────────────────────────────
 const courseStore = useCourseStore();
 const flowStore = useFlowStore();
 
-// ─── c) Списки / Стейты ─────────────────────────────────────────────────────
-// Список всех курсов:
 const courses = computed<Course[]>(() => courseStore.list);
 
-// Состояния режима “Редактирование курсов”
+
 const isEditingCourses = ref(false);
 const checkedCourses = ref<number[]>([]);
 const showDeleteCoursesDialog = ref(false);
 
-// Состояния режима “Редактирование потоков”
+
 const isEditingFlows = ref(false);
 const checkedFlows = ref<number[]>([]);
 const showDeleteFlowsDialog = ref(false);
 
-// Потоки, отфильтрованные по currentCourseId:
+
 const flowsForThisCourse = computed<Flow[]>(() => {
   if (currentCourseId.value !== null) {
     return flowStore.list.filter(f => f.courseId === currentCourseId.value);
@@ -338,28 +333,24 @@ const flowsForThisCourse = computed<Flow[]>(() => {
   return [];
 });
 
-// Имя текущего курса (для заголовка “Потоки курса …”)
 const currentCourseName = computed<string | null>(() => {
   const c = courses.value.find(x => x.id === currentCourseId.value);
   return c ? c.name : null;
 });
 
-// Состояние поп-апа “Поток успешно создан”
+
 const showFlowCreated = ref(false);
 
-// ─── d) Lifecycle: начальная загрузка ──────────────────────────────────────
+
 onMounted(async () => {
-  // Если ещё не подгружены курсы, подгрузим
   if (!courses.value.length) {
     await courseStore.fetchCourses();
   }
-  // Если у нас есть курс в query и ещё нет потоков, подгрузим все потоки (store хранит их в flowStore.list)
   if (currentCourseId.value !== null && !flowStore.list.length) {
     await flowStore.fetchFlows();
   }
 });
 
-// Если вручную сменили query (например переключились на другой courseId), загрузим потоки снова
 watch(
   () => currentCourseId.value,
   async newId => {
@@ -369,13 +360,11 @@ watch(
   }
 );
 
-// ─── e) Навигация / Действия ─────────────────────────────────────────────────
-// Добавить курс → переходим на AddCourse
+
 function goToAddCourse() {
   router.push({ name: 'AddCourse' });
 }
 
-// Из режима “редактировать курсы” → если ровно один курс отмечен, открываем страницу редактирования
 function editSingleCourse() {
   if (checkedCourses.value.length === 1) {
     const id = checkedCourses.value[0];
@@ -383,14 +372,14 @@ function editSingleCourse() {
   }
 }
 
-// Подтвердить удаление курсов → показать диалог
+
 function confirmDeleteCourses() {
   if (checkedCourses.value.length) {
     showDeleteCoursesDialog.value = true;
   }
 }
 
-// Удалить выбранные курсы из store, выйти из edit-режима
+
 function deleteSelectedCourses() {
   checkedCourses.value.forEach(id => {
     courseStore.removeCourse(id);
@@ -400,13 +389,13 @@ function deleteSelectedCourses() {
   showDeleteCoursesDialog.value = false;
 }
 
-// Войти в режим “редактирование курсов”
+
 function enterCourseEditMode() {
   isEditingCourses.value = true;
   checkedCourses.value = [];
 }
 
-// Переключить чекбокс курса
+
 function toggleCourseCheckbox(id: number, val: boolean) {
   if (val) {
     if (!checkedCourses.value.includes(id)) {
@@ -417,13 +406,12 @@ function toggleCourseCheckbox(id: number, val: boolean) {
   }
 }
 
-// Щелкнули по карточке курса → показываем потоки этого курса (добавляем query ?courseId=…)
+
 function viewCourseFlows(course: Course) {
   router.push({ name: 'Flows', query: { courseId: String(course.id) } });
 }
 
-// ────────────────────────────────────────────────────────────────────────────
-// Перейти на “Добавить поток” (сохраняем текущий courseId в query)
+
 function goToAddFlow() {
   if (currentCourseId.value !== null) {
     router.push({
@@ -433,19 +421,18 @@ function goToAddFlow() {
   }
 }
 
-// Перейти на детали конкретного потока
+
 function viewFlowDetail(flow: Flow) {
   router.push({ name: 'FlowDetail', params: { flowId: flow.id } });
 }
 
-// Войти в режим “редактирование потоков” (показываем чекбоксы справа)
+
 function enterFlowEditMode() {
   isEditingFlows.value = true;
   checkedFlows.value = [];
 }
 
-// Если нажали “Редактировать” в режиме редактирования потоков,
-// и отмечен ровно один поток, переходим на страницу редактирования этого потока:
+
 function editSingleFlow() {
   if (checkedFlows.value.length === 1) {
     const id = checkedFlows.value[0];
@@ -453,14 +440,14 @@ function editSingleFlow() {
   }
 }
 
-// Подтвердить удаление потоков → показать диалог
+
 function confirmDeleteFlows() {
   if (checkedFlows.value.length) {
     showDeleteFlowsDialog.value = true;
   }
 }
 
-// Удалить выбранные потоки, выйти из режима редактирования
+
 function deleteSelectedFlows() {
   checkedFlows.value.forEach(id => {
     flowStore.removeFlow(id);
@@ -470,7 +457,7 @@ function deleteSelectedFlows() {
   showDeleteFlowsDialog.value = false;
 }
 
-// Переключить чекбокс потока
+
 function toggleFlowCheckbox(id: number, val: boolean) {
   if (val) {
     if (!checkedFlows.value.includes(id)) {
@@ -481,16 +468,14 @@ function toggleFlowCheckbox(id: number, val: boolean) {
   }
 }
 
-// Вызывается (напрямую из AddFlow.vue) после успешного добавления потока,
-// чтобы показать “Поток успешно создан” диалог.
+
 function onAddFlowSuccess() {
   showFlowCreated.value = true;
 }
 
-// После клика “Далее” в диалоге “Поток успешно создан”:
+
 function onFlowCreatedContinue() {
   showFlowCreated.value = false;
-  // Перезагрузим текущую страницу, чтобы диалог не повторялся:
   router.push({
     name: 'Flows',
     query: { courseId: String(currentCourseId.value) },
@@ -499,7 +484,6 @@ function onFlowCreatedContinue() {
 </script>
 
 <style scoped>
-/* Сохраняем строго 320px ширину у обоих поп-апов: “Удалить” и “Готово!” */
 .delete-dialog .el-dialog__body,
 .success-dialog .el-dialog__body {
   padding: 0;

@@ -1,4 +1,3 @@
-// src/store/flowStore.ts
 import { defineStore } from 'pinia'
 
 export type Flow = {
@@ -18,14 +17,11 @@ export const useFlowStore = defineStore('flow', {
   actions: {
     async fetchFlows() {
       this.loading = true
-      // … здесь обычно делаете API‐вызов, но для примера – просто эмуляция:
       await new Promise((r) => setTimeout(r, 300))
       if (!this.list.length) {
         this.list = [
-          // Примеры “заглушек” потоков:
           { id: 1, name: 'DSF-1', mentor: 'Иванов Иван', startDate: '2025-01-01', endDate: '2025-06-01', courseId: 1 },
           { id: 2, name: 'DSF-2', mentor: 'Петров Петр', startDate: '2025-02-01', endDate: '2025-07-01', courseId: 1 },
-          // … и т.д.
         ]
       }
       this.loading = false

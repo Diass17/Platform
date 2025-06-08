@@ -4,67 +4,27 @@
       <!-- Заголовок -->
       <h2 class="text-3xl font-semibold mb-6">Добавить студента</h2>
 
-      <el-form
-        :model="form"
-        ref="formRef"
-        label-width="0"
-        class="space-y-6 bg-white p-6 rounded-lg shadow"
-      >
+      <el-form :model="form" ref="formRef" label-width="0" class="space-y-6 bg-white p-6 rounded-lg shadow">
         <!-- ФИО -->
-        <el-input
-          v-model="form.surname"
-          placeholder="Фамилия"
-          clearable
-          size="large"
-          class="w-full bg-purple-50 placeholder-purple-300 text-lg"
-        />
-        <el-input
-          v-model="form.firstName"
-          placeholder="Имя"
-          clearable
-          size="large"
-          class="w-full bg-purple-50 placeholder-purple-300 text-lg"
-        />
-        <el-input
-          v-model="form.patronymic"
-          placeholder="Отчество"
-          clearable
-          size="large"
-          class="w-full bg-purple-50 placeholder-purple-300 text-lg"
-        />
+        <el-input v-model="form.surname" placeholder="Фамилия" clearable size="large"
+          class="w-full bg-purple-50 placeholder-purple-300 text-lg" />
+        <el-input v-model="form.firstName" placeholder="Имя" clearable size="large"
+          class="w-full bg-purple-50 placeholder-purple-300 text-lg" />
+        <el-input v-model="form.patronymic" placeholder="Отчество" clearable size="large"
+          class="w-full bg-purple-50 placeholder-purple-300 text-lg" />
 
         <!-- ИИН, Email, Телефон -->
-        <el-input
-          v-model="form.iin"
-          placeholder="ИИН"
-          clearable
-          size="large"
-          class="w-full bg-purple-50 placeholder-purple-300 text-lg"
-        />
-        <el-input
-          v-model="form.email"
-          placeholder="Email"
-          clearable
-          size="large"
-          class="w-full bg-purple-50 placeholder-purple-300 text-lg"
-        />
-        <el-input
-          v-model="form.phone"
-          placeholder="+7(xxx)-xxx-xx-xx"
-          clearable
-          size="large"
-          class="w-full bg-purple-50 placeholder-purple-300 text-lg"
-        />
+        <el-input v-model="form.iin" placeholder="ИИН" clearable size="large"
+          class="w-full bg-purple-50 placeholder-purple-300 text-lg" />
+        <el-input v-model="form.email" placeholder="Email" clearable size="large"
+          class="w-full bg-purple-50 placeholder-purple-300 text-lg" />
+        <el-input v-model="form.phone" placeholder="+7(xxx)-xxx-xx-xx" clearable size="large"
+          class="w-full bg-purple-50 placeholder-purple-300 text-lg" />
 
         <!-- Статус и Top Student -->
         <div class="flex gap-4">
-          <el-select
-            v-model="form.status"
-            placeholder="Статус"
-            clearable
-            size="large"
-            class="flex-1 bg-purple-50 placeholder-purple-300 text-lg"
-          >
+          <el-select v-model="form.status" placeholder="Статус" clearable size="large"
+            class="flex-1 bg-purple-50 placeholder-purple-300 text-lg">
             <el-option label="Студент" value="active" />
             <el-option label="Выпускник" value="graduated" />
           </el-select>
@@ -75,51 +35,28 @@
         </div>
 
         <!-- Финансирование -->
-        <el-select
-          v-model="form.financing"
-          placeholder="Финансирование"
-          clearable
-          size="large"
-          class="w-full bg-purple-50 placeholder-purple-300 text-lg"
-        >
+        <el-select v-model="form.financing" placeholder="Финансирование" clearable size="large"
+          class="w-full bg-purple-50 placeholder-purple-300 text-lg">
           <el-option label="Полная оплата" value="full" />
           <el-option label="Со скидкой 30%" value="discount" />
           <el-option label="Грант" value="grant" />
         </el-select>
 
         <!-- Предмет -->
-        <el-input
-          v-model="form.subject"
-          placeholder="Предмет"
-          clearable
-          size="large"
-          class="w-full bg-purple-50 placeholder-purple-300 text-lg"
-        />
+        <el-input v-model="form.subject" placeholder="Предмет" clearable size="large"
+          class="w-full bg-purple-50 placeholder-purple-300 text-lg" />
 
         <!-- Ввод суммы оплаты и оплачено -->
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block mb-1 text-lg text-gray-700">Оплата за курс</label>
-            <el-input-number
-              v-model="coursePrice"
-              :min="0"
-              :step="1000"
-              controls-position="right"
-              size="large"
-              class="w-full"
-            />
+            <el-input-number v-model="coursePrice" :min="0" :step="1000" controls-position="right" size="large"
+              class="w-full" />
           </div>
           <div>
             <label class="block mb-1 text-lg text-gray-700">Сумма оплачено</label>
-            <el-input-number
-              v-model="amountPaid"
-              :min="0"
-              :max="discountPrice"
-              :step="1000"
-              controls-position="right"
-              size="large"
-              class="w-full"
-            />
+            <el-input-number v-model="amountPaid" :min="0" :max="discountPrice" :step="1000" controls-position="right"
+              size="large" class="w-full" />
           </div>
         </div>
 
@@ -169,7 +106,7 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStudentStore, Student } from '@/store/studentStore'
 
-// Form interface
+
 interface StudentFormModel {
   surname: string
   firstName: string
@@ -186,38 +123,48 @@ interface StudentFormModel {
 const router = useRouter()
 const store = useStudentStore()
 
-// Form data
+
 const formRef = ref()
 const form = ref<StudentFormModel>({
-  surname: '', firstName: '', patronymic: '',
-  iin: '', email: '', phone: '',
-  status: '', topStudent: false, financing: '', subject: '',
+  surname: '',
+  firstName: '',
+  patronymic: '',
+  iin: '',
+  email: '',
+  phone: '',
+  status: '',
+  topStudent: false,
+  financing: '',
+  subject: '',
 })
 
-// Payment amounts
-const coursePrice  = ref(150000)
-const amountPaid   = ref(0)
+
+const coursePrice = ref(150000)
+const amountPaid = ref(0)
 const discountPrice = computed(() => Math.round(coursePrice.value * 0.7))
-const amountDue     = computed(() => discountPrice.value - amountPaid.value)
+const amountDue = computed(() => discountPrice.value - amountPaid.value)
 
 function formatTenge(value: number) {
   return value >= 0 ? value.toLocaleString('ru-RU') + ' тг' : '—'
 }
 
-// Submit handler
+
 async function submitForm() {
   const fullName = `${form.value.surname} ${form.value.firstName} ${form.value.patronymic}`.trim()
+
   const payload: Omit<Student, 'id'> = {
-    name: fullName,
+    name: fullName,               
     iin: form.value.iin,
     email: form.value.email,
-    phone: form.value.phone,
+    number: form.value.phone,
     status: form.value.status,
-    topStudent: form.value.topStudent,
-    financing: form.value.financing,
+    top_student: form.value.topStudent,
+    funding_source: form.value.financing,
     course: form.value.subject,
     stream: '',
+    full_name: fullName         
   }
+
   await store.createStudent(payload)
   router.push({ name: 'Students' })
 }
@@ -231,6 +178,7 @@ async function submitForm() {
   border-radius: 0.5rem;
   font-size: 1.125rem;
 }
+
 .el-input__inner::placeholder,
 .el-select .el-input__inner::placeholder {
   color: #c4b5fd;
