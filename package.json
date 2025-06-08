@@ -2,8 +2,10 @@
   "name": "alpha-education-platform",
   "version": "0.0.1",
   "scripts": {
-    "dev": "vite",
+    "prebuild": "chmod +x ./node_modules/.bin/vite",
     "build": "vite build" ,
+    "dev": "vite",
+    "start": "vite",
     "preview": "vite preview",
     "lint": "eslint --ext .ts,.vue src",
     "format": "prettier --write \"src/**/*.{ts,vue,css}\""
